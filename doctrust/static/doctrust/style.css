@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root{
+  --bg-color: #F2F2F2;
+  --btn-bgcolor: #3291B6;
+  --btn-textcolor: #FFFFFF;
+  --accordian-bgcolor: #EEEEEE;
+  /* --accordian-active: #D1D1D1; */
+  /* --accordian-body: #EEEEEE; */
+  --accordian-active: #BBBBBB;
+  --accordian-body: #e5e5e5;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  color: #212529;
+  padding-top: 76px; 
+}
+
+/* navbar */
+.navbar.navbar-glass {
+  background-color: rgba(255, 255, 255, 0.556);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.brand-text {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #212529;
+  text-decoration: none;
+  font-size: 1.3rem;
+}
+
+.home-link{
+  font-size: 0.9rem;
+}
+
+/* index page */
+.primary-container {
+  max-width: 700px;
+}
+
+.hero-container {
+  min-height: calc(100vh - 120px); 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.card .card-body-container {
+  border-radius: 50px;
+  border: 1.5px solid var(--accordian-body);
+}
+
+.custom-list-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.custom-list-group .list-group-item{
+  background-color: var(--bg-color);
+  border-radius: 6px;
+  transition: 0.4s ease;
+}
+
+.custom-list-group .list-group-item h6{
+  font-size: 0.9rem;
+}
+
+.custom-list-group .list-group-item:first-child {
+  border-radius: 20px 20px 6px 6px;
+}
+
+.custom-list-group .list-group-item:last-child {
+  border-radius: 6px 6px 20px 20px;
+}
+
+.custom-list-group .list-group-item:only-child {
+  border-radius: 20px;
+}
+
+.custom-list-group .list-group-item:hover {
+  background-color: var(--accordian-body);
+}
+
+/* doc_detail page */
+.doc-info-card{
+  background-color: var(--bg-color);
+}
+
+.doc-info-card .card-title {
+  font-size: 0.9rem;
+}
+
+.form-main button,
+.sticky-sidebar a{
+  font-size: 0.9rem;
+}
+
+.form-main textarea{
+  background-color: var(--bg-color);
+  border-color: transparent;
+  padding: 14px;
+  height: 100px;
+  transition: 0.3s;
+}
+
+.form-main textarea::placeholder {
+  font-size: 0.9rem;
+}
+
+.form-main textarea:focus{
+  background-color: var(--bg-color);
+  border: 1px solid var(--accordian-active);
+  height: 150px;
+  transition: 0.3s;
+  max-height: 250px;
+  padding: 16px;
+}
+
+.form-main button{
+  background-color: var(--btn-bgcolor);
+  color: var(--btn-textcolor);
+}
+
+.form-main button:focus,
+.form-main button:hover{
+  background-color: var(--btn-bgcolor);
+  color: var(--btn-textcolor);
+  opacity: 0.8;
+}
+
+.card .answer-card-main{
+  background-color: var(--bg-color);
+}
+
+h6,h5 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+h6:first-child,  h5:first-child{
+  margin-top: 0;
+}
+
+.answer-body p, .answer-body li {
+  font-size: 0.9rem;
+}
+
+.answer-body li{
+  margin-bottom: 0.5rem;
+}
+
+.answer-body ul {
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.accordion {
+  --bs-accordion-border-width: 0;
+}
+
+.accordion-item {
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.accordion .accordion-header,
+.accordion .accordion-button,
+.custom-accordion-header .accordion-button-collapse {
+  background-color: var(--accordian-bgcolor);
+  transition: 0.5s;
+}
+
+.accordion .accordion-item .accordion-button{
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.custom-accordion-header:has(.accordion-button:not(.collapsed)) {
+  background-color: var(--accordian-active);
+  border-radius: 30px 30px 0 0;
+  padding: 5px 0 0 0;
+}
+
+.custom-accordion-header:has(.accordion-button:not(.collapsed)) 
+.accordion-button-collapse {
+  background-color: var(--accordian-active);
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: var(--accordian-active);;
+  color: inherit;
+  box-shadow: none;
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+}
+
+.delete-btn:hover {
+  background-color: #efd8da;
+  color: red;
+}
+
+.accordion .accordion-body {
+  background-color: var(--accordian-body);
+  border-radius: 0 0 30px 30px;
+}
+
+.accordion-button:not(.collapsed) {
+  box-shadow: none;
+}
+
+.answer-body p:last-child { margin-bottom: 0; }
+
+@media (max-width: 768px) {
+  .card .card-body-container{
+    border-radius: 20px;
+  }
+}
+
+@media (min-width: 992px) {
+  .sticky-sidebar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 100px; 
+    align-self: flex-start; 
+  }
+
+  .sticky-sidebar::-webkit-scrollbar { width: 6px; }
+  .sticky-sidebar::-webkit-scrollbar-track { background-color: transparent; }
+  .sticky-sidebar::-webkit-scrollbar-thumb { background-color: #dee2e6; border-radius: 10px; }
+}

@@ -1,0 +1,16 @@
+Django>=4.2,<5.0
+chromadb>=0.4.0
+google-generativeai
+langchain
+langchain-google-genai
+sentence-transformers==2.6.1
+transformers==4.38.2
+PyMuPDF
+gunicorn
+python-dotenv
+whitenoise
+rank-bm25
+numpy<2
+
+torch==2.2.2+cpu
+--extra-index-url https://download.pytorch.org/whl/cpu

@@ -1,0 +1,79 @@
+{% extends "doctrust/base.html" %}
+{% load static %}
+
+{% block title %}DocTrustAI{% endblock %}
+ 
+{% block content %}
+<div class="container primary-container">
+  
+  <div class="hero-container">
+    <div class="text-center mb-4">
+      <h4 class="fw-semibold mb-2">Document Assistant</h4>
+      <p class="text-muted">Find answers in your files</p>
+    </div>
+   
+    <div class="card border-0 mb-5 w-100 hero-card">
+      <div class="card-body card-body-container p-4">
+        <form method="post" action="{% url 'upload' %}" enctype="multipart/form-data" class="d-flex flex-column flex-md-row gap-3 justify-content-center">
+          {% csrf_token %}
+          <input class="form-control rounded-5" type="file" name="pdf_file" accept=".pdf" required>
+          <button type="submit" class="btn btn-dark px-4 fw-normal rounded-5">Upload</button>
+        </form>
+      </div>
+        {% if messages %}
+        <div class="row mt-2">
+          {% for message in messages %}
+            <p class="text-center text-danger"><small>{{ message }}</small></p>
+          {% endfor %}
+        </div>
+      {% endif %}
+     
+    </div>
+
+ 
+    {% if documents %}
+      <div class="w-100 mt-2">
+        <h6 class="fw-medium mb-3">Your Documents</h6>
+        <ul class="list-group custom-list-group border-0">
+          {% for doc in documents %}
+          <li class="list-group-item gap-2 d-flex justify-content-between align-items-center p-3 border-0" title="{{ doc.name }}">
+            
+            <div class="d-flex align-items-center gap-3">
+              <div class="word-break">
+                <h6 class="mb-0 fw-medium">{{ doc.name }}</h6>
+                <small class="text-muted">
+                  {% if doc.page_count %}{{ doc.page_count }} pages &bull; {% endif %}
+                  {{ doc.uploaded_at|date:"d M Y" }}
+                </small>
+              </div>
+            </div>
+            
+            <div class="d-flex align-items-center gap-2 flex-shrink-0">
+              {% if doc.status == 'ready' %}
+                <a href="{% url 'doc_detail' doc.id %}" class="stretched-link"></a>
+                <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2 position-relative z-3">Active</span>
+
+              {% elif doc.status == 'processing' or doc.status == 'pending' %}
+                <span class="badge bg-warning-subtle text-warning rounded-pill px-3 py-2">Processing</span>
+                <a href="{% url 'doc_detail' doc.id %}" class="btn btn-sm btn-outline-secondary rounded-pill px-3 ms-2 position-relative z-3">View</a>
+
+              {% else %}
+                <span class="badge bg-danger-subtle text-danger rounded-pill px-3 py-2">Failed</span>
+              {% endif %}
+              
+              <form method="post" action="{% url 'delete_document' doc.id %}" style="display:inline" onsubmit="return confirm('Delete {{ doc.name }}?')">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-transparent position-relative z-3 p-2 pb-1 border-0 rounded-3 delete-btn" title="Delete">
+                  <span class="material-symbols-outlined fs-6">delete</span>
+                </button>
+              </form>
+            </div>
+
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

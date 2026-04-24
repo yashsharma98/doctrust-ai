@@ -1,0 +1,139 @@
+{% extends "doctrust/base.html" %}
+{% load static %}
+
+{% block title %}DocTrustAI - {{ doc.name }}{% endblock %}
+ 
+{% block content %}
+<div class="row gx-lg-5 position-relative">
+ 
+  <div class="col-lg-5 mb-5 sticky-sidebar">
+    
+    <h6 class="text-muted fw-medium mb-3">Current document</h6>
+    
+    <div class="doc-info-card p-3 mb-4 rounded-pill">
+      <div class="d-flex align-items-center gap-2">
+
+        <h5 class="card-title doc-title fw-medium mb-0">{{ doc.name }}</h5>
+
+      {% if doc.page_count %}
+        <span class="badge d-flex align-items-center bg-primary-subtle text-primary rounded-pill px-3 py-2">
+          <span class="fw-medium">{{ doc.page_count }} pages</span>
+        </span>
+        {% endif %}
+
+      </div>
+    </div>
+ 
+    <form method="post" action="" class="mb-3 form-main">
+      {% csrf_token %}
+      <div class="mb-3">
+        <textarea name="question" rows="5" class="form-control rounded-4 shadow-none" placeholder="Find anything in this document" required>{% if result %}{{ result.question }}{% endif %}</textarea>
+      </div>
+      <button type="submit" class="btn btn-transparent rounded-pill p-2 px-4">Find</button>
+    </form>
+  
+  </div>
+ 
+  <div class="col-lg-7 pb-2">
+ 
+    {% if result %}
+      
+      {% if result.no_answer %}
+        <div class="alert alert-danger rounded-4">
+          {{ result.answer }}
+        </div>
+      {% else %}
+
+      <div class="mb-3">
+        <h6 class="text-muted fw-medium mb-3">Fetched results</h6>
+      </div>
+      <div class="card mb-4 border-0 rounded-4">
+        <div class="card-body answer-card-main p-3 rounded-4">
+                  
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            
+            <h5 class="fw-bold fs-5 mb-0">
+              "{{ result.question }}"
+              <!-- "What is SVM" -->
+            </h5>
+
+            <span class="badge {% if result.confidence >= 0.75 %}bg-success-subtle{% elif result.confidence >= 0.40 %}bg-warning-subtle{% else %}bg-danger-subtle{% endif %} d-flex align-items-center">
+              <span class="text-muted fw-normal me-1">Matching score:</span>
+              <span class="fw-medium text-dark">
+                {% widthratio result.confidence 1 100 %}%
+                <!-- 0% -->
+              </span>
+            </span>
+
+          </div>
+  
+          <div class="answer-body">
+            {{ result.answer|safe }}
+  <!-- Information not available in document
+  <br>
+  We could not find a complete answer to your query in the document. Here is the breakdown of what is missing:
+  <br><br>
+  Definition of SVM: The document does not contain any information defining or describing Support Vector Machines (SVM). While it lists various machine learning algorithms like Logistic Regression and k-Nearest Neighbors, SVM is not mentioned, nor are its core principles, how it works, or its applications.
+    -->
+          </div>
+  
+        </div>
+      </div>
+
+    {% endif %}
+    {% endif %}
+ 
+    {% if question|length > 1 or question|length == 1 and not result %}
+ 
+    {% if result %}
+        <hr class="mb-4 text-muted">
+      {% endif %}
+
+    <h6 class="text-muted fw-medium  mb-3">History</h6>
+    
+    <div class="accordion" id="historyAccordion">
+      {% for i in question %}
+        {% if not result or i.question != result.question %}
+        <div class="accordion-item mb-2 rounded-4"> 
+          
+          <div class="accordion-header custom-accordion-header d-flex align-items-center pe-2">
+            <button class="accordion-button collapsed shadow-none flex-grow-1 p-3 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ i.id }}">
+              <div class="d-flex flex-column w-100 pe-2">
+                <span class="fw-medium text-dark mb-2" style="font-size: 0.95rem; user-select: text;">{{ i.question }}</span>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge {% if i.confidence >= 0.75 %}bg-success-subtle{% elif i.confidence >= 0.40 %}bg-warning-subtle{% else %}bg-danger-subtle{% endif %}">
+                    <span class="text-muted fw-normal me-1">Matching score:</span>
+                    <span class="fw-medium text-dark">
+                      {% widthratio i.confidence 1 100 %}%
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </button>
+           
+            <div class="accordion-button-collapse pe-2">
+              <form method="post" action="{% url 'delete_doc_question' i.id %}" onsubmit="return confirm('Delete this question?')" class="m-0">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-transparent p-2 pb-1 border-0 rounded-3 delete-btn" title="Delete">
+                  <span class="material-symbols-outlined fs-6">delete</span>
+                </button>
+              </form>
+            </div>
+          </div>
+          
+          <div id="collapse{{ i.id }}" class="accordion-collapse collapse">
+            <div class="accordion-body p-3">
+              <div class="answer-body mb-3">
+                {{ i.answer|safe }}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+ 
+  </div>
+</div>
+{% endblock %}

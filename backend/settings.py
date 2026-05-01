@@ -31,10 +31,10 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["doctrustai.up.railway.app"]
+ALLOWED_HOSTS = ["doctrust-ai.up.railway.app"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://doctrustai.up.railway.app",
+    "https://doctrust-ai.up.railway.app",
 ]
 
 # Application definition
